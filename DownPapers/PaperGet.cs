@@ -31,6 +31,8 @@ namespace DownPapers
                 paper.Name = xmldoc.DocumentNode.SelectSingleNode("//head/title").InnerText.Split("|")?[1].Trim();
                 string pdfUrl = xmldoc.DocumentNode.SelectSingleNode(@"//div[@id='article']/iframe").GetAttributeValue("src","");
 
+                if (pdfUrl.StartsWith("//")) pdfUrl = "https:" + pdfUrl;
+
                 return pdfUrl;
                 //await DownPaper(pdfUrl,paper);
 
@@ -45,6 +47,12 @@ namespace DownPapers
             var resp = await client.GetAsync(url);
             if (resp.IsSuccessStatusCode)
             {
+                
+                if (string.IsNullOrEmpty(paper.Name))
+                {
+                    DateTime dateTime = DateTime.Now.ToLocalTime();
+                    paper.Name = "temp-" + dateTime.ToString("yyyyMMddhhmmss");
+                }
                 using var stream = await resp.Content.ReadAsStreamAsync();
                 using var f = File.Create(SaveUrl+paper.Name+".pdf");
                 {

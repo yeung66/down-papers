@@ -23,19 +23,26 @@ namespace DownPapers
         {
             var doi = inputDoi.Text;
             var paper = new Paper() { Doi = doi, Status = Paper.PaperStatus.Wait };
-         
+            source.Add(paper);
+            DGPapers.Items.Refresh();
 
             string url = await paperGet.GetPageAsync(doi,paper);
             if (url != null)
             {
                 paper.Status = Paper.PaperStatus.Download;
-                source.Add(paper);
+                DGPapers.Items.Refresh();
+            }
+
+            try
+            {
+                await paperGet.DownPaper(url, paper);
+                DGPapers.Items.Refresh();
+            }catch
+            {
+                paper.Status = Paper.PaperStatus.Failed;
                 DGPapers.Items.Refresh();
             }
             
-
-            await paperGet.DownPaper(url, paper);
-            DGPapers.Items.Refresh();
 
         }
 
