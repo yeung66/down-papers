@@ -135,4 +135,5 @@ _NCrunch*
 
 # user
 .vs/
+.vscode/
 *.zip

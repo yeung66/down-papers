@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 
@@ -37,8 +38,9 @@ namespace DownPapers
             {
                 await paperGet.DownPaper(url, paper);
                 DGPapers.Items.Refresh();
-            }catch
+            }catch(Exception ex)
             {
+                Console.WriteLine(ex);
                 paper.Status = Paper.PaperStatus.Failed;
                 DGPapers.Items.Refresh();
             }
@@ -50,26 +52,20 @@ namespace DownPapers
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            var dialog = new SaveFileDialog();
-            //dialog.InitialDirectory = textbox.Text; // Use current value for initial dir
-            dialog.Title = "Select a Directory"; // instead of default "Save As"
-            dialog.Filter = "Directory|*.this.directory"; // Prevents displaying files
-            dialog.FileName = "select"; // Filename will then be "select.this.directory"
+            var dialog = new CommonOpenFileDialog();
+            dialog.IsFolderPicker = true;
 
-            if (dialog.ShowDialog() == true)
+
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 string path = dialog.FileName;
-                // Remove fake filename from resulting path
-                path = path.Replace("\\select.this.directory", "");
-                path = path.Replace(".this.directory", "");
-                path = path + "/";
-                // If user has changed the filename, create the new directory
+                
                 if (!System.IO.Directory.Exists(path))
                 {
                     System.IO.Directory.CreateDirectory(path);
                 }
 
-                paperGet.SaveUrl = inputDirectory.Text = path;
+                paperGet.SaveUrl = inputDirectory.Text = path + @"\";
             }
         }
     }
