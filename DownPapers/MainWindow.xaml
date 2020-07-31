@@ -5,23 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DownPapers"
         mc:Ignorable="d"
-        Title="DownPapers" Height="600" Width="762">
-    <Grid>
-        <TextBox x:Name="inputDoi" HorizontalAlignment="Left" Margin="61,59,0,0" Text="Please input essay's doi" TextWrapping="Wrap" VerticalAlignment="Top" Width="455" Height="33" VerticalContentAlignment="Center"/>
-        <Button Content="Get" HorizontalAlignment="Left" Margin="540,59,0,0" VerticalAlignment="Top" Height="33" Width="160" Click="Button_Click"/>
+        Title="DownPapers" Height="600" Width="762" Activated="Grid_GotFocus">
+    <Grid >
+        <TextBox x:Name="inputDoi" Margin="60,59,246,0" Text="Please input essay's doi" TextWrapping="Wrap" VerticalAlignment="Top"  Height="33" VerticalContentAlignment="Center"/>
+        <Button Content="Get" Margin="0,59,62,0" VerticalAlignment="Top" Height="33" Click="Button_Click" MaxWidth="200" HorizontalAlignment="Right" Width="160"/>
 
-        <Label Content="To Down Queue" HorizontalAlignment="Left" Margin="61,136,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.124,-0.366"/>
-        <DataGrid x:Name="DGPapers" Margin="60,166,62,60" AutoGenerateColumns="False">
+        <Label Content="Downloading Queue: double click finish tasks to open the file explorer" Margin="61,136,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.124,-0.366" HorizontalAlignment="Left" />
+        <DataGrid x:Name="DGPapers" Margin="60,166,62,60" AutoGenerateColumns="False" MouseDoubleClick="DGPapers_MouseDoubleClick" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="状态" Binding="{Binding Status}"/>
                 <DataGridTextColumn Header="名字" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="DOI" Binding="{Binding Doi}"/>
                 <DataGridTextColumn Header="路径" Binding="{Binding Path}"/>
-                
+
             </DataGrid.Columns>
         </DataGrid>
-        <TextBox x:Name="inputDirectory" HorizontalAlignment="Left" Margin="61,97,0,0" Text="Save Directory" TextWrapping="Wrap" VerticalAlignment="Top" Width="455" Height="34" VerticalContentAlignment="Center"/>
-        <Button Content="Select Directoy To Save" HorizontalAlignment="Left" Margin="540,100,0,0" VerticalAlignment="Top" Height="31" Width="160" Click="Button_Click_2"/>
+        <TextBox x:Name="inputDirectory" Margin="61,97,246,0" Text="Save Directory" TextWrapping="Wrap" VerticalAlignment="Top" Height="34" VerticalContentAlignment="Center"/>
+        <Button Content="Select Directoy To Save" Margin="0,100,62,0" VerticalAlignment="Top" Height="31" Click="Button_Click_2" MaxWidth="200" HorizontalAlignment="Right" Width="160"/>
 
     </Grid>
 </Window>

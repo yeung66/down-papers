@@ -16,10 +16,17 @@ A tool to download papers from [sci-hub](https://sci-hub.st) via essay's doi.
   - downloading papers.
   - listing download tasks.
 
+#### v2
+
+- add some exception handler when cannot capture papers' data from websites.
+- get doi from clipboard when getting window activated.
+- double click paper downloaded to open the file explorer
+
+
 ### Todo
 
 - to set proxy manually.
-- to open the selected document.
+- ~~to open the selected document.~~
 - save all papers downloaded globally.
-- error handling.
-- get doi from paste directly.
+- ~~error handling.~~
+- ~~get doi from paste directly.~~

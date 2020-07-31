@@ -2,6 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Diagnostics;
 
 namespace DownPapers
 {
@@ -17,8 +22,8 @@ namespace DownPapers
             inputDirectory.Text = paperGet.SaveUrl = System.IO.Path.GetFullPath("."+"/");
         }
 
-        PaperGet paperGet = new PaperGet();
-        List<Paper> source = Paper.InitPapers();
+        readonly PaperGet paperGet = new PaperGet();
+        readonly List<Paper> source = Paper.InitPapers();
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -67,6 +72,46 @@ namespace DownPapers
 
                 paperGet.SaveUrl = inputDirectory.Text = path + @"\";
             }
+        }
+
+        private void Grid_GotFocus(object sender, EventArgs e)
+        {
+            var doi = Clipboard.GetText();
+
+            if (!string.IsNullOrEmpty(doi))
+            {
+                var match = Regex.Match(doi, @"^https?://doi\.org/[0-9.]+/[0-9.]+");
+                if (match.Success)
+                {
+                    inputDoi.Text = doi;
+                    inputDoi.Focus();
+                    inputDoi.SelectionLength = inputDoi.Text.Length;
+                }
+            }
+        }
+
+        private void DGPapers_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DataGrid datagrid = sender as DataGrid;
+            Point aP = e.GetPosition(datagrid);
+            IInputElement obj = datagrid.InputHitTest(aP);
+            DependencyObject target = obj as DependencyObject;
+
+
+            while (target != null)
+            {
+                if (target is DataGridRow)
+                {
+                    break;
+                }
+                target = VisualTreeHelper.GetParent(target);
+            }
+
+            var paper = (Paper)(target as DataGridRow)?.Item;
+            if (paper == null || paper.Status != Paper.PaperStatus.Finish) return;
+
+            Trace.WriteLine(paper.Path);
+            Process.Start("explorer", paper.Path.Substring(0,paper.Path.LastIndexOf(@"\")));
         }
     }
 }

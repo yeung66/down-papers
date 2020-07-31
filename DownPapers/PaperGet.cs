@@ -25,8 +25,8 @@ namespace DownPapers
                 var html = await resp.Content.ReadAsStringAsync();
                 var xmldoc = new HtmlDocument();
                 xmldoc.LoadHtml(html);
-                paper.Name = xmldoc.DocumentNode.SelectSingleNode("//head/title").InnerText.Split("|")?[1].Trim();
-                string pdfUrl = xmldoc.DocumentNode.SelectSingleNode(@"//div[@id='article']/iframe").GetAttributeValue("src", "");
+                paper.Name = xmldoc.DocumentNode.SelectSingleNode("//head/title")?.InnerText?.Split("|")?[1]?.Trim() ?? "";
+                string pdfUrl = xmldoc.DocumentNode.SelectSingleNode(@"//div[@id='article']/iframe")?.GetAttributeValue("src", "") ?? "";
 
                 if (pdfUrl.StartsWith("//")) pdfUrl = "https:" + pdfUrl;
 
